@@ -1,0 +1,49 @@
+﻿@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+
+
+@{
+    Layout = ConstantApp.chefLayout;
+    List<Recipe> recipes = ViewBag.recpies;
+}
+@inject IViewLocalizer localizer
+
+
+@if (recipes.Count == 0)
+{
+    <div class="alert alert-warning" role="alert">
+        @localizer["No recipes available."]
+    </div>
+}
+else
+{
+    <div class=" pb-3">
+        <div class="container">
+            <div class="row g-4">
+                @foreach (var i in recipes)
+                {
+                    <div class="card mb-3">
+                        <img src="@Url.Content(ConstantApp.wwwImgPath + i.ImageRecipe)" class="card-img-top" alt="Error Image" style="height: 500px; object-fit: fill;">
+                        <div class="card-body">
+                            <h5 class="card-title">@i.Recipename</h5>
+                            <p class="card-text">@i.Description.Substring(0, 100)...</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item" style="color: green;font-weight: bold;">@i.Price $</li>
+                                <li class="list-group-item" style="font-weight: bold;">@i.Chef.FirstName @i.Chef.LastName</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+}
+

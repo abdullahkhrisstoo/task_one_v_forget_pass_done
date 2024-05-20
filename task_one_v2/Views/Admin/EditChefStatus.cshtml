@@ -1,0 +1,48 @@
+﻿@model UserInfo
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+
+@{
+    List<UserInfo> allChef = ViewBag.AllChef;
+    Layout = ConstantApp.adminLayout;
+}
+
+
+
+
+
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditChefStatus">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Userid" />
+
+            <input asp-for="FirstName" type="hidden" />
+
+            <input asp-for="LastName" type="hidden" />
+
+            <input asp-for="Image" type="hidden" />
+            <input asp-for="Nationality" type="hidden" />
+            <select style="display:none" asp-for="Roleid" type="hidden" asp-items="ViewBag.Roleid"></select>
+            <div class="form-group">
+                <label asp-for="VerificationStatusId" class="control-label"></label>
+                <select asp-for="VerificationStatusId" class="form-control" asp-items="ViewBag.VerificationStatusId"></select>
+                <span asp-validation-for="VerificationStatusId" class="text-danger"></span>
+            </div>
+
+            <input asp-for="CertificateImage" type="hidden" />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+

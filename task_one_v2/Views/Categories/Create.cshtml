@@ -1,0 +1,49 @@
+﻿@model Category
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@{
+    Layout = ConstantApp.adminLayout;
+}
+
+<h4 class="text-center mb-4">@localizer["Create Category"]</h4>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-body">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">@localizer["Category Name"]</label>
+                        <input type="text" class="form-control" id="categoryName" name="categoryName" asp-for="CategoryName">
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for=FormFile for="categoryImage" class="form-label"></label>
+                        <input asp-for="FormFile" class="form-control" id="categoryImage" onchange="displayImage(this)">
+                        <span asp-validation-for="FormFile" class="text-danger"></span>
+                    </div>
+
+                    <div id="imagePreview" class="mt-3" style="width: 100%; height: 500px; background-size:cover; background-position: center;"></div>
+                    
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-primary">@localizer["Create"]</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+        function displayImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+</script>
+

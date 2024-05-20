@@ -1,0 +1,109 @@
+﻿@model PurchaseViewModel
+
+@using Microsoft.AspNetCore.Html
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using task_one_v2.App_Core.StateMangement
+@using task_one_v2.ViewModel
+@inject IViewLocalizer localizer
+@inject IUserManager userMnager
+
+@{
+    Layout = ConstantApp.homeLayout;
+    Recipe recipe = ViewBag.RecipeDetails;
+    // PurchaseViewModel purchase = ViewBag.purchase;
+}
+
+<div class="m-5 p-5">
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="carousel slide" data-ride="carousel" id="carousel-1">
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active"><img class="img-thumbnail w-100 d-block" src=@Url.Content(ConstantApp.wwwImgPath + recipe.ImageRecipe) alt="Slide Image" loading="lazy"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-7">
+                <h4>@recipe.Recipename</h4>
+                <div class="price">
+                    <span class="mr-2 cut text-success">
+                        @recipe.Price $
+                    </span>
+                </div>
+
+                <div class="d-flex align-items-center mt-4 offers mb-1">
+                    <i class="fa fa-check-square-o mt-1"></i>
+                    <span class="ml-1">
+                        @recipe.Description<br>
+                    </span>
+                </div>
+                <hr>
+                <div>
+                    <span class="font-weight-bold">Chef:</span>
+                    <span class="ml-2">@recipe?.Chef?.FirstName @recipe?.Chef?.LastName, </span>
+                    <br />
+                    <span class="font-weight-bold">Nationality:</span>
+                    <span class="ml-2">@recipe?.Chef?.Nationality</span>
+                    <br />
+                    <span class="font-weight-bold">Sales times:</span>
+                    <span class="ml-2">@recipe?.RecipeOrders.Count()</span>
+                    <br />
+                    <span class="font-weight-bold">Category:</span>
+                    <span class="ml-2">@recipe?.Category?.CategoryName</span>
+
+                </div>
+                <br />
+                <hr />
+                <div class="row">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form asp-action="RecipeDetails">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <input asp-for="Numberid"  class="form-control" placeholder="**** **** **** ****" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-7 col-md-7">
+                                        <div class="form-group">
+                                            <input asp-for="Expiredate"  class="form-control" placeholder="MM / YY" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-5 col-md-5 pull-right">
+                                        <div class="form-group">
+                                            <input asp-for="Cvc" class="form-control" placeholder="CVC" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="form-group">
+                                            <input asp-for="Fullname" class="form-control" placeholder=@localizer["Card Name"] />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <button type="submit" class="btn btn-success btn-lg btn-block">@localizer["Confirm Payment"]</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,23 @@
+﻿@model LocalizationEntry
+
+@using task_one_v2.App_Core.ConstString
+
+@{
+    Layout = ConstantApp.adminLayout;
+
+}
+<form method="post" asp-action="Add">
+    <div>
+        <label for="Key">Key:</label>
+        <input type="text" id="Key" name="Key" required />
+    </div>
+    <div>
+        <label for="ArabicValue">Arabic Value:</label>
+        <input type="text" id="ArabicValue" name="ArabicValue" required />
+    </div>
+    <div>
+        <label for="EnglishValue">English Value:</label>
+        <input type="text" id="EnglishValue" name="EnglishValue" required />
+    </div>
+    <button type="submit">Add Entry</button>
+</form>

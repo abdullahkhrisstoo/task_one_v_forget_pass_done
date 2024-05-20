@@ -1,0 +1,94 @@
+﻿@using Microsoft.AspNetCore.Html
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using task_one_v2.App_Core.StateMangement
+@inject IViewLocalizer localizer
+@inject IUserManager userMnager
+@{
+    Layout = ConstantApp.homeLayout;
+    List<Category> categories = ViewBag.categories;
+    decimal? id = ViewBag.firstCategoryID;
+    // List<Dictionary<decimal, string>> search = ViewBag.Search;
+}
+<div class="py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">@localizer["Food Menu"]</h1>
+    </div>
+</div>
+<div class="py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">@localizer["Food Menu"]</h5>
+            <h1 class="mb-5">@localizer["Most Popular Items"]</h1>
+        </div>
+        <div class="input-group mb-3">
+            <input id="searchInput" type="text" name="searchString" class="form-control" placeholder="@localizer["Search for recipes..."]" value="">
+            <div class="input-group-append">
+                <button id="searchButton" class="btn btn-primary" type="button">@localizer["Search"]</button>
+            </div>
+        </div>
+     
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+                @foreach (var c in categories)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="pill" href="#tab-@c.CategoryId">
+                            <img class="rounded-circle" style="max-height: 40px; max-width: 40px; width: 40px; height: 40px" src="@Url.Content(ConstantApp.wwwImgPath + c.ImageCategory)" />
+                            <span>@c.CategoryName</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+            <div class="tab-content">
+                @foreach (var c in categories)
+                {
+                    <div id="tab-@c.CategoryId" class="tab-pane fade @((c.CategoryId == id) ? "show active" : "")">
+                        @await RenderRecipes(c.CategoryId)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@{
+    async Task<IHtmlContent> RenderRecipes(decimal categoryId)
+    {
+        try
+        {
+            var recipes = await userMnager.GetAllRecipeDependsOnCategoryId(categoryId);
+            if (recipes != null && recipes.Any())
+            {
+                var div = new TagBuilder("div");
+                div.AddCssClass("row g-4");
+                foreach (var recipe in recipes)
+                {
+                    <div class="d-flex align-items-center">
+                        <img class="flex-shrink-0 img-fluid rounded" src=@Url.Content(ConstantApp.wwwImgPath + recipe.ImageRecipe) alt="" style="width: 80px; height:80px">
+                        <div class="w-100 d-flex flex-column text-start ps-4">
+                            <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                <span>@recipe.Recipename</span>
+                                <span class="text-primary">@recipe.Price</span>
+                            </h5>
+                            <small class="fst-italic">@recipe?.Chef?.FirstName @recipe?.Chef?.LastName</small>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                }
+                return new HtmlContentBuilder().AppendHtml(div);
+            }
+            else
+            {
+                var msg = localizer["No recipes found for this category."];
+                return new HtmlString($"<div class=\"alert alert-danger\">{msg.Value}</div>");
+            }
+        }
+        catch (Exception ex)
+        {
+            var  msg= localizer["An error occurred while rendering recipes."];
+            return new HtmlString($"<p class=\"alert alert-danger\">{msg.Value}</p>");
+        }
+    }
+}
