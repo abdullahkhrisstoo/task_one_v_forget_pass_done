@@ -1,0 +1,83 @@
+﻿@model Recipe
+
+
+
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+@{
+    Layout = ConstantApp.chefLayout;
+    List<UserInfo> chefs = ViewBag.AllCef;
+}
+
+
+
+<h1>Edit</h1>
+
+<h4>Recipe</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RecipeId" />
+            <div class="form-group">
+                <label asp-for="Recipename" class="control-label"></label>
+                <input asp-for="Recipename" class="form-control" />
+                <span asp-validation-for="Recipename" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ingredients" class="control-label"></label>
+                <input asp-for="Ingredients" class="form-control" />
+                <span asp-validation-for="Ingredients" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Procedure" class="control-label"></label>
+                <input asp-for="Procedure" class="form-control" />
+                <span asp-validation-for="Procedure" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChefId" class="control-label"></label>
+                <select asp-for="ChefId" class="form-control" asp-items="ViewBag.ChefId"></select>
+                <span asp-validation-for="ChefId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ApprovalStatusId" class="control-label"></label>
+                <select asp-for="ApprovalStatusId" class="form-control" asp-items="ViewBag.ApprovalStatusId"></select>
+                <span asp-validation-for="ApprovalStatusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageRecipe" class="control-label"></label>
+                <input asp-for="ImageRecipe" class="form-control" />
+                <span asp-validation-for="ImageRecipe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

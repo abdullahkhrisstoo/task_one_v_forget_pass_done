@@ -1,0 +1,65 @@
+﻿@using task_one_v2.App_Core.ConstString
+
+@{
+    Layout = ConstantApp.adminLayout;
+
+}
+@model List<LocalizationEntry>
+
+
+<form method="post" asp-action="Add" class="mt-4">
+    <div class="mb-3">
+        <label for="Key" class="form-label">Key:</label>
+        <input type="text" id="Key" name="Key" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label for="ArabicValue" class="form-label">Arabic Value:</label>
+        <input type="text" id="ArabicValue" name="ArabicValue" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label for="EnglishValue" class="form-label">English Value:</label>
+        <input type="text" id="EnglishValue" name="EnglishValue" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Add Entry</button>
+</form>
+
+
+<form method="post" asp-action="LangIndex">
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Arabic</th>
+                        <th>English</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td><textarea name="Entries[@i].Key" readonly>@Model[i].Key</textarea></td>
+                    <td><textarea name="Entries[@i].ArabicValue">@Model[i].ArabicValue</textarea></td>
+                    <td><textarea name="Entries[@i].EnglishValue">@Model[i].EnglishValue</textarea></td>
+                    <td>
+                        <button class="btn btn-block btn-primary font-weight-medium" type="submit" asp-action="Update" formmethod="post">Update</button>
+                    </td>
+                    <td>
+                        <form method="post" asp-action="Delete">
+                            <input type="hidden" name="key" value="@Model[i].Key" />
+                            <button type="submit" class="btn btn-block btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </form>
+
+        
+
+
+
+
+
+
+

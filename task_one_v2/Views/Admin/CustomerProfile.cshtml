@@ -1,0 +1,69 @@
+﻿@model UserInfo
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@{
+    Layout = ConstantApp.adminLayout;
+    var email = string.Empty;
+
+    foreach (var e in Model.UserCredentials)
+    {
+        email = @e.Email; break;
+    }
+
+}
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-4 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img id="profileImage" style="max-width:200px; max-height:200px; height:200px;width:200px" class="rounded-circle mt-5" src="@Url.Content(ConstantApp.wwwImgPath + Model.Image)">
+                <span class="font-weight-bold">@Model.FirstName @Model.LastName</span>
+                <span class="text-black-50">
+                    @email
+                </span>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">@localizer["Info"]</h4>
+                </div>
+                <div class="row mt-3">
+                    @* /////////////////////////////////// *@
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                        <div class="card card-tale">
+                            <div class="card-body">
+                                <p class="mb-4">
+                                    @localizer["Full Name"]
+                                </p>
+                                <p style="font-size:17px" class="mb-2">@Model.FirstName @Model.LastName</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-12 mb-4">
+                        <div class="card card-tale">
+                            <div class="card-body">
+                                <p class="mb-4">
+                                    @localizer["Email"]
+                                </p>
+                                <p style="font-size:17px" class="mb-2">@email</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                        <div class="card card-tale">
+                            <div class="card-body">
+                                <p class="mb-4">@localizer["Order Number"]</p>
+                                <p style="font-size:17px" class="mb-2">@Model.RecipeOrders.Count()</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

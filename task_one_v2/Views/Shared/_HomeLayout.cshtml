@@ -1,0 +1,281 @@
+﻿@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Builder;
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.AspNetCore.Http.Features;
+@using Microsoft.Extensions.Options;
+@using task_one_v2.App_Core.StateMangement
+
+
+
+
+
+@* @inject IConfiguration Configuration
+@{
+    var externalLinks = Configuration.GetSection("ExternalLinks");
+}
+ *@
+@inject IViewLocalizer localizer
+
+@{
+
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+    
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="@(isRTL ? "RTL" : "LTR")">
+
+<head>
+    @if (isRTL)
+    {
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
+    }
+    <meta charset="utf-8">
+    <title>Gordon Ramsay</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    @* /////////////////////////////////////////////////////////////////////////////////////////////////////// *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link href="~/home/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/home/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/home/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/home/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/home/css/style.css" rel="stylesheet">
+
+
+    <link href="~/Globalimg/favicon.jpg" rel="icon">
+    <link rel="stylesheet" href="~/Admin/vendors/mdi/css/materialdesignicons.min.css">
+
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/Admin/vendors/feather/feather.css">
+    <link rel="stylesheet" href="~/Admin/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="~/Admin/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="~/Admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="~/Admin/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/js/select.dataTables.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="~/Admin/css/vertical-layout-light/style.css">
+    <!-- endinject -->
+    <link href="~/home/css/style.css" rel="stylesheet">
+    @*/////////////////////////////////////////////////////////////////////////////////////////////////// // *@
+
+
+    <!-- Favicon -->
+    <link href="\home\img\gordon_ramsay.jpg" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap"
+          rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="~/home/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/home/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/home/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/home/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="~/home/css/style.css" rel="stylesheet">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+    <div class="bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner"
+             class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+        <!-- Navbar & Hero Start -->
+        <div class="position-relative p-0">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
+                <a href="" class="navbar-brand p-0">
+                    <h1 class="text-primary m-0">
+                        <img src="\home\img\gordon_ramsay.jpg" alt=""
+                             class=" rounded-circle ">  @localizer["gordon ramsay"]
+                    </h1>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+
+                    <a asp-controller="Home" asp-action="Home" class="nav-item nav-link @(Context.Request.Path == "/Home/Home" ? "active" : "")">@localizer["home"]</a>
+                    <a asp-controller="Home" asp-action="About" class="nav-item nav-link @(Context.Request.Path == "/Home/About" ? "active" : "")">@localizer["About Us"]</a>
+                    <a asp-controller="Home" asp-action="OurTeam" class="nav-item nav-link @(Context.Request.Path == "/Home/OurTeam" ? "active" : "")">@localizer["Team Members"]</a>
+                    <a asp-controller="Home" asp-action="Menu" class="nav-item nav-link @(Context.Request.Path == "/Home/Menu" ? "active" : "")">@localizer["Menu"]</a>
+                    <a asp-controller="Home" asp-action="Testimonial" class="nav-item nav-link @(Context.Request.Path == "/Home/Testimonial" ? "active" : "")">@localizer["testimonials"]</a>
+                    <a asp-controller="ContactUs" asp-action="CreateContact" class="nav-item nav-link @(Context.Request.Path == "/ContactUs/CreateContact" ? "active" : "")">@localizer["Contact"]</a>
+                    
+                </div>
+             @*        @if (
+                ViewContext.HttpContext.Session.GetInt32(ConstantApp.userSessionKey) != null)
+                {
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <li class="nav-item nav-settings d-none d-lg-flex">
+                            <a class="nav-link" href="#">
+                                <i class="icon-ellipsis"></i>
+                            </a>
+                        </li>
+                    </div>
+                }
+                else
+                {
+                    <a asp-controller="Auth" asp-action="Login" class="btn btn-primary py-2 px-4">Login</a>
+                } *@
+        </div>
+        </nav>
+    </div>
+    @RenderBody()
+    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">@localizer["Company"]</h4>
+                    <a class="btn btn-link" asp-controller="Home" asp-action="About">@localizer["About Us"]</a>
+                    <a class="btn btn-link" asp-controller="ContactUs" asp-action="CreateContact">@localizer["Contact Us"]</a>
+                    <a class="btn btn-link" asp-controller="Home" asp-action="PrivicyPolicy">@localizer["Privacy Policy"]</a>
+                    <a class="btn btn-link" asp-controller="Home" asp-action="TermsAndCondition"></a>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">@localizer["Contact"]</h4>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>@localizer["location Address"]</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>@localizer["Contact Phone No."]</p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>@localizer["Contact Email"]</p>
+                   
+
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">@localizer["Newsletter"]</h4>
+                    <p>@localizer["Newsletter body"]</p>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        &copy; <a class="border-bottom" href="#">Gordon Ramsay</a>, @localizer["All Right Reserved."]
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/home/lib/wow/wow.min.js"></script>
+    <script src="~/home/lib/easing/easing.min.js"></script>
+    <script src="~/home/lib/waypoints/waypoints.min.js"></script>
+    <script src="~/home/lib/counterup/counterup.min.js"></script>
+    <script src="~/home/lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/home/lib/tempusdominus/js/moment.min.js"></script>
+    <script src="~/home/lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="~/home/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/home/js/main.js"> </script>
+    @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+    <script src="~/Admin/vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/Admin/vendors/chart.js/Chart.min.js"></script>
+    <script src="~/Admin/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/Admin/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="~/Admin/js/dataTables.select.min.js"></script>
+
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/Admin/js/off-canvas.js"></script>
+    <script src="~/Admin/js/hoverable-collapse.js"></script>
+    <script src="~/Admin/js/template.js"></script>
+    <script src="~/Admin/js/settings.js"></script>
+    <script src="~/Admin/js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="~/Admin/js/dashboard.js"></script>
+    <script src="~/Admin/js/Chart.roundedBarCharts.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>  
+    @* ////////////////////////////////////////////////////////////////////////////////////////// *@
+</body>
+
+</html>
+
+
+
+<div id="right-sidebar" class="settings-panel">
+    <i class="settings-close ti-close"></i>
+    <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
+               aria-controls="todo-section" aria-expanded="true">@localizer["Profile"]</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="setting-content" style="display: flex; flex-direction: column;">
+        <div class="p-4">
+            <partial name="_SelectLanguage" />
+        </div>
+        <a asp-controller="Home" asp-action="Profile" class="btn btn-primary mb-2">@localizer["Edit Profile"]</a>
+        <a asp-controller="Testimonials" asp-action="CreateTestimonial" class="btn btn-primary mb-2">@localizer["testimonials"]</a>
+        <a asp-controller="Home" asp-action="MyOrder" class="btn btn-primary mb-2">@localizer["Order"]</a>
+        <a asp-controller="Home" asp-action="EditPassword" class="btn btn-primary mb-2">@localizer["Edit Password"]</a>
+        <a asp-controller="Auth" asp-action="Logout" class="btn btn-primary mb-2">@localizer["Logout"]</a>
+        <a  class="nav-link"></a>
+    </div>
+    <hr />
+
+   
+
+
+</div>

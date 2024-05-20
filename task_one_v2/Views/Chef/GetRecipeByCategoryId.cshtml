@@ -1,0 +1,109 @@
+﻿@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@{
+    Layout = ConstantApp.chefLayout;
+    List<Recipe> recipes = ViewBag.recpies;
+}
+<link href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+
+@inject IViewLocalizer localizer
+<div class="input-group mb-3">
+    <input id="searchInput" type="text" name="searchString" class="form-control" placeholder="@localizer["Search for recipes..."]" value="">
+    <div class="input-group-append">
+        <button class="btn btn-primary" id="searchButton" type="button">@localizer["Search"]</button>
+    </div>
+</div>
+@if (recipes.Count == 0)
+{
+    <div class="alert alert-warning" role="alert">
+        @localizer["No recipes available."]
+    </div>
+}
+else
+{
+    <div class=" pb-3">
+        <div class="container">
+            <div class="row g-4">
+                @foreach (var i in recipes)
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4 recipe-card">
+                        <div class="card shadow-sm border-0 h-100">
+                            <div class="card-body p-0">
+                                <div class="card-img-actions">
+                                    <img src="@Url.Content(ConstantApp.wwwImgPath + i.ImageRecipe)" class="card-img img-fluid w-100" alt="Error Image" style="height: 250px; object-fit: cover;">
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <h6 class="font-weight-semibold mb-1">
+                                        <a class="text-default" data-abc="true">@i.Recipename</a>
+                                    </h6>
+                                    <span class="text-muted" data-abc="true">@i.Chef.FirstName @i.Chef.LastName</span>
+                                </div>
+                                @{
+                                    var description = i.Description;
+                                    string shortDescription = string.Empty;
+
+                                    if (!string.IsNullOrEmpty(description))
+                                    {
+                                        shortDescription = description.Length > 100 ? description.Substring(0, 100) + "..." : description;
+                                    }
+                                }
+                                <p class="card-text">@shortDescription</p>
+                                <h5 class="mb-0 font-weight-semibold">$@i.Price</h5>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+}
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+    $(document).ready(function () {
+        function filterRecipes() {
+            var searchValue = $('#searchInput').val().toLowerCase();
+            $('.recipe-card').each(function () {
+                var cardText = $(this).text().toLowerCase();
+                if (cardText.includes(searchValue)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+
+        $('#searchButton').on('click', filterRecipes);
+        $('#searchInput').on('keyup', filterRecipes);
+    });
+</script>
+
+<style>
+    .card-img-actions img {
+        transition: transform 0.3s ease;
+    }
+
+    .card-img-actions:hover img {
+        transform: scale(1.1);
+    }
+
+    .recipe-card .card {
+        border-radius: 10px;
+        height: 100%;
+    }
+
+    .recipe-card .card-body {
+        padding: 15px;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+</style>
