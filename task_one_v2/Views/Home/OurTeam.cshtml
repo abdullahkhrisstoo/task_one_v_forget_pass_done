@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Html
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using task_one_v2.App_Core.StateMangement
+@inject IViewLocalizer localizer
+@inject IUserManager userMnager
+@{
+    Layout = ConstantApp.homeLayout;
+    List<UserInfo> chefs = ViewBag.chef;
+}
+
+
+<!-- Hero  start -->
+
+<div class="py-5 bg-dark hero-header mb-5">
+    <div class="container text-center my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">@localizer["Team Members"]</h1>
+       
+    </div>
+</div>
+<!-- Hero End -->
+<!-- Team Start -->
+<div class="pt-5 pb-3">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">@localizer["Team Members"]</h5>
+            <h1 class="mb-5">@localizer["Our Master Chefs"]</h1>
+        </div>
+        <div class="row g-4">
+            @{
+                int counter = 0;
+                foreach (var r in chefs)
+                {
+                    if (counter < 8)
+                    {
+                        <div class="col-lg-3 col-md-6 recipe-item wow fadeInUp" data-wow-delay="0.1s">
+                            <a asp-action="ChefProfile" asp-controller="Home" asp-route-id="@r?.Userid">
+                                <div class="team-item text-center rounded overflow-hidden">
+                                    <div class="rounded-circle overflow-hidden m-4">
+                                        <img class="img-fluid" style="max-width:250px; max-height:250px; width:250px; height:250px;" src="@Url.Content(ConstantApp.wwwImgPath + r.Image)" alt="">
+                                    </div>
+                                    <h5 class="mb-0">@r?.FirstName @r?.LastName</h5>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    counter++;
+                }
+            }
+        </div>
+    </div>
+</div>
+<!-- Team End -->

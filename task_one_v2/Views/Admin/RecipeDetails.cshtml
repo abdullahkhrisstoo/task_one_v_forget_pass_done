@@ -1,0 +1,111 @@
+﻿@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@model task_one_v2.Models.Recipe
+@{
+    Recipe recipe = ViewBag.RecipeDeatils;
+    Layout = ConstantApp.adminLayout;
+}
+
+<form asp-action="RecipeDetails" asp-controller="Admin">
+    <div class="row">
+        <div class="col-5">
+            <div class="card">
+                <div class="container m-4">
+                <h6>@localizer["Personal Image"]</h6>
+                    <img src="@Url.Content(ConstantApp.wwwImgPath + Model?.Chef?.Image)" class="card-img-top" alt="Error Image" style="height: 500px; object-fit: fill;">
+                <div class="card-body">
+                    <h5 class="card-title">@Model?.Chef?.FirstName @Model?.Chef?.LastName</h5>
+                    <p class="card-text">@Model?.Chef?.Nationality</p>
+                </div>
+                <hr />
+                    <h6>@localizer["Recipe Image"]</h6>
+                <div class="card">
+                    <img src="@Url.Content(ConstantApp.wwwImgPath + Model?.ImageRecipe)" />
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-7">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <label asp-for="ApprovalStatusId" class="control-label"></label>
+                        <select asp-for="ApprovalStatusId" class="form-control" asp-items="ViewBag.ApprovalStatusId"></select>
+                        <span asp-validation-for="ApprovalStatusId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-4" style="padding:30px">
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+                </div>
+            </div>     
+            <input type="hidden" asp-for="RecipeId" />
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Recipename</h5>
+                    <p class="card-text"><strong>@localizer["Description"]: </strong>@Model.Description</p>
+                    <p class="card-text"><strong>@localizer["Ingredients"]: </strong>@Model.Ingredients</p>
+                    <p class="card-text"><strong>@localizer["Steps"]: </strong>@Model.Procedure</p>
+                    <p class="card-text"><strong>@localizer["Category"]: </strong>@Model?.Category?.CategoryName</p>
+                    <p class="card-text"><strong>@localizer["CreationDate"]: </strong>@Model?.CreationDate.ToString("yyyy-MM-dd")</p>
+                    <p class="card-text" style="color: green;"><strong>@localizer["Price"]: </strong>@Model?.Price</p>
+                </div>
+            </div>
+            <div class="form-group" style="display: none;>
+                <label asp-for="Recipename" class="control-label"></label>
+                <input asp-for="Recipename" class="form-control"  />
+                <span asp-validation-for="Recipename" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display: none;>
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" ></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display: none;>
+                <label asp-for="Ingredients" class="control-label"></label>
+                <textarea asp-for="Ingredients" class="form-control" ></textarea>
+                <span asp-validation-for="Ingredients" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display: none;>
+                <label asp-for="Procedure" class="control-label"></label>
+                <textarea asp-for="Procedure" class="form-control" ></textarea>
+                <span asp-validation-for="Procedure" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display: none;>
+                <label asp-for="ChefId" class="control-label"></label>
+                <select asp-for="ChefId" class="form-control" asp-items="ViewBag.ChefId" ></select>
+                <span asp-validation-for="ChefId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display: none;>
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId" ></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display: none;>
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display: none;>
+                <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control"   />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group" style="display: none;>
+                <label asp-for="ImageRecipe" class="control-label"></label>
+                <input asp-for="ImageRecipe" class="form-control" />
+                <span asp-validation-for="ImageRecipe" class="text-danger"></span>
+            </div>
+           
+           
+        </div>
+    </div>
+
+        
+        </form>

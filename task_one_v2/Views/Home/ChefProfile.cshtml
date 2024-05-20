@@ -1,0 +1,79 @@
+﻿@model UserInfo
+
+@using Microsoft.AspNetCore.Html
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using task_one_v2.App_Core.StateMangement
+@inject IViewLocalizer localizer
+@inject IUserManager userMnager
+@{
+    Layout = ConstantApp.homeLayout;
+}
+
+
+
+<div class="container m-5 p-5">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-5">
+                <div class="row">
+                    <div class="col-12 bg-white p-0 px-3 py-3 mb-3">
+                        <div class="d-flex flex-column align-items-center">
+                            <img class="photo"
+                                 style="width: 100px; height: 100px; border-radius: 50%;object-fit: cover;"
+                                 src=@Url.Content(ConstantApp.wwwImgPath + Model.Image)
+                                 alt="">
+                            <p class="fw-bold h4 mt-3">@Model.FirstName @Model.LastName</p>
+                            <p class="text-muted mb-3">@Model.Nationality</p>
+
+                        </div>
+                    </div>
+                    <div class="col-12 bg-white p-0 ">
+                        <img class="photo m-5"
+                             style="width: 400px; height: 200px; border-radius: 1%;object-fit: fill;"
+                             src=@Url.Content(ConstantApp.wwwImgPath + Model.CertificateImage)
+                             alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 ps-md-4">
+                <div class="row">
+                    <div class="container mt-5">
+                       
+                        <div class="row">
+                            @if (Model.Recipes.Count() == 0)
+                            {
+                                <div class= "alert alert-danger">No order found .</div>
+
+                            }
+                            else
+                            {
+                                @foreach (var r in Model.Recipes)
+                                {
+                                    <div class="col-md-4">
+
+                                        <a asp-action="RecipeDetails" asp-controller="Home" asp-route-id="@r.RecipeId">
+                                            <div class="card">
+                                                <div class="text-center">
+                                                    <img height="200px" src=@Url.Content(ConstantApp.wwwImgPath + r.ImageRecipe) width="250">
+                                                </div>
+                                                <div class="text-center">
+                                                    <h6>@r.Recipename</h6>
+                                                    <span class="text-success">@r.Price $</span>
+                                                </div>
+                                            </div>
+
+                                        </a>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

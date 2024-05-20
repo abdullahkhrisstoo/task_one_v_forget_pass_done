@@ -1,0 +1,145 @@
+﻿@model IEnumerable<RecipeOrder>
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@{
+    Layout = ConstantApp.adminLayout;
+    var siteProfit = Model.Sum(p => p?.Recipe?.Price) * (decimal)0.07;
+    var totalProfit = @Model.Sum(p => p?.Recipe?.Price);
+    var totalSales = @Model.Count();
+}
+<link href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/buttons/2.0.0/css/buttons.dataTables.min.css" rel="stylesheet" />
+<div class="grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="card-title">@localizer["All Order"]</h4>
+                <li class="nav-item nav-settings d-none d-lg-flex">
+                    <a class="nav-link" href="#">
+                        <i class="icon-ellipsis"></i>
+                    </a>
+                </li>
+            </div>
+            <table class="table" id="Order">
+                <thead>
+                    <tr>
+                        <th>
+                            @localizer["Order No."]
+                        </th>
+                        <th>
+                            @localizer["Date"]
+                        </th>
+                        <th>
+                            @localizer["Chef Name"]
+                        </th>
+                        <th>
+                            @localizer["Customer Name"]
+                        </th>
+                        <th>
+                            @localizer["Price"]
+                        </th>
+                        <th>
+                            @localizer["recipes"]
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.OrderId
+                            </td>
+                            <td>
+                                @item.OrderDate.ToString("yyyy-MM-dd")
+                            </td>
+                            <td>
+                                @item?.Recipe?.Chef?.FirstName @item?.Recipe?.Chef?.LastName
+                            </td>
+                            <td>
+                                @item?.User?.FirstName @item?.User?.LastName
+                            </td>
+                            <td>
+                                @item?.Recipe?.Price
+                            </td>
+                            <td>
+                                @item?.Recipe?.Recipename
+                            </td>
+                            <td>
+                                <a asp-action="Delete" asp-controller="RecipeOrders" asp-route-id="@item?.OrderId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>@localizer["Total sales"]</td>
+                        <td>@totalSales   </td>
+                    </tr>
+                    <tr>
+                        <td>@localizer["Profits"]</td>
+                        <td>@totalProfit  </td>
+                    </tr>
+                    <tr>
+                        <td>@localizer["Site profit"]</td>
+                        <td>@siteProfit   </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/dataTables.buttons.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.html5.min.js" defer></script>
+
+<script>
+    $(document).ready(function () {
+        $('#Order').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ]
+        });
+    });
+</script>
+
+
+
+
+<div id="right-sidebar" class="settings-panel">
+    <i class="settings-close ti-close"></i>
+    <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
+               aria-controls="todo-section" aria-expanded="true">@localizer["Filter"]</a>
+        </li>
+    </ul>
+   
+    <hr />
+    <form asp-action="AllRecipe" method="post" class="p-2">
+        <div class="form-group">
+            <label class="p-2" for="startDate">@localizer["Start Date"]</label>
+            <input type="date" id="startDate" name="startDate" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label class="p-2" for="endDate">@localizer["End Date"]</label>
+            <input type="date" id="endDate" name="endDate" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Filter by Date</button>
+    </form>
+</div>
+
+
+
+
