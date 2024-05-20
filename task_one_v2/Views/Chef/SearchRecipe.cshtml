@@ -1,0 +1,42 @@
+﻿@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer
+
+@{
+    Layout = ConstantApp.chefLayout;
+    string searchString = ViewBag.searchString;
+}
+
+<div class="container">
+    <h1>@localizer["Search Recipes"]</h1>
+    <!-- Search Form -->
+    @using (Html.BeginForm("SearchRecipe", "Chef", FormMethod.Post, new { @class = "input-group", id = "searchForm" }))
+    {
+        <div class="input-group mb-3">
+            <input id="searchInput" type="text" name="searchString" class="form-control" placeholder="@localizer["Search for recipes..."]" value="@searchString">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">@localizer["Search"]</button>
+            </div>
+        </div>
+    }
+    <!-- Search Results -->
+    <div id="searchResults"></div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#searchInput').on('input', function () {
+            $('#searchForm').submit(); // Submit the form on input change
+        });
+
+        $('#searchForm').submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
+            var searchString = $('#searchInput').val();
+            $.get('@Url.Action("SearchRecipe", "Chef")', { searchString: searchString }, function (data) {
+                $('#searchResults').html(data);
+            });
+        });
+    });
+</script>

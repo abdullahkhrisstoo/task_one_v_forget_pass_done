@@ -1,0 +1,95 @@
+﻿@model UpdateUserDataViewModel
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using task_one_v2.ViewModel
+@inject IViewLocalizer localizer
+@{
+    Layout = ConstantApp.homeLayout;
+}
+
+
+
+
+
+<form asp-action="Profile" asp-controller="Chef" enctype="multipart/form-data">
+
+    <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-4 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                    <img id="profileImage" style="max-width:200px; max-height:200px; height:200px;width:200px" class="rounded-circle mt-5" src="@Url.Content(ConstantApp.wwwImgPath + Model.Image)">
+
+                    <span class="font-weight-bold">@Model.FirstName @Model.LastName</span>
+                    <span class="text-black-50">
+                        @Model.Email
+                    </span>
+                    <div class="col-md-12">
+                        <label asp-for="PersonalImageFile" class="labels"></label>
+                        <input asp-for="PersonalImageFile" id="imageInput" class="form-control">
+                        <span asp-validation-for="PersonalImageFile" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">@localizer["Profile Settings"]</h4>
+                    </div>
+                    <div class="row mt-3">
+                        @* /////////////////////////////////// *@
+                        <div class="col-md-12">
+                            <label asp-for="FirstName" class="labels"></label>
+                            <input asp-for="FirstName" class="form-control">
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-12">
+                            <label asp-for="LastName" class="labels"></label>
+                            <input asp-for="LastName" class="form-control">
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                   
+
+                        @* //////////////////////////////////////////////////// *@
+                    </div>
+
+                </div>
+            </div>
+            <div class="p-5">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for=@Model.Email class="control-label"></label>
+                    <input asp-for="@Model.Email" class="form-control" />
+                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Password" class="control-label"></label>
+                    <input asp-for="@Model.Password" class="form-control" />
+                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+
+<script>
+    document.getElementById('imageInput').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            document.getElementById('profileImage').src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+</script>

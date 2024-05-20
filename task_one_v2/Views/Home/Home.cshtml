@@ -1,0 +1,211 @@
+﻿@using Microsoft.AspNetCore.Html
+@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using task_one_v2.App_Core.StateMangement
+@inject IViewLocalizer localizer
+@inject IUserManager userMnager
+@{
+    Layout = ConstantApp.homeLayout;
+    List<Recipe> recipes = ViewBag.Recipes;
+    List<UserInfo> chefs = ViewBag.chef;
+    List<Testimonial> testimonials = ViewBag.Testimonial;
+    Homepage homeData= ViewBag.HomeImg;
+
+
+
+    int numberOfChef = ViewBag.NumberOfChef;
+    int yearsOfExperience = ViewBag.YearsOfExperience;
+}
+
+
+<!-- Hero Start -->
+
+<div class="py-5 bg-dark hero-header mb-5">
+    <div class="container my-5 py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 text-center text-lg-start">
+                <h1 class="display-3 text-white animated slideInLeft">
+                    @localizer["Enjoy Our Delicious Meal"]
+                </h1>
+                <p class="text-white animated slideInLeft mb-4 pb-2">
+                    @localizer["Home Page Text"]
+                </p>
+                <p></p>
+            </div>
+            <div class="col-lg-6 text-center text-lg-end overflow-hidden">
+                <img class="img-fluid" src="~/home/img/hero.png" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+<!--  Hero End -->
+<!-- About Start -->
+<div class="py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6">
+                <div class="row g-3">
+                    <div class="col-6 text-start">
+                        <img class="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.1s"
+                             src="~/home/img/about-1.jpg">
+                    </div>
+                    <div class="col-6 text-start">
+                        <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.3s"
+                             src="~/home/img/about-2.jpg" style="margin-top: 25%;">
+                    </div>
+                    <div class="col-6 text-end">
+                        <img class="img-fluid rounded w-75 wow zoomIn" data-wow-delay="0.5s"
+                             src="~/home/img/about-3.jpg">
+                    </div>
+                    <div class="col-6 text-end">
+                        <img class="img-fluid rounded w-100 wow zoomIn" data-wow-delay="0.7s"
+                             src="~/home/img/about-4.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h5 class="section-title ff-secondary text-start text-primary fw-normal">@localizer["About us"]</h5>
+                <h1 class="mb-4">@localizer["Welcome to"]<i class="fa fa-utensils text-primary me-2"></i>@localizer["gordon ramsay"]</h1>
+                <p class="mb-4">
+                    @localizer["about us body"]
+                </p>
+                <div class="row g-4 mb-4">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center border-start border-5 border-primary px-3">
+                            <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">
+                                @yearsOfExperience
+                            </h1>
+                            <div class="ps-4">
+                                <p class="mb-0">@localizer["Years of"]</p>
+                                <h6 class="text-uppercase mb-0">@localizer["Experience"]</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center border-start border-5 border-primary px-3">
+                            <h1 class="flex-shrink-0 display-5 text-primary mb-0" data-toggle="counter-up">
+                                @numberOfChef
+                            </h1>
+                            <div class="ps-4">
+                                <p class="mb-0"> @localizer["Popular"] </p>
+                                <h6 class="text-uppercase mb-0">@localizer["Master Chef"]</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+<!-- Menu Start -->
+<div class="py-5">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">@localizer["Food Menu"]</h5>
+            <h1 class="mb-5">@localizer["Most Popular Items"]</h1>
+        </div>
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+            <div class="tab-content">
+
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row g-4">
+                        @{
+                            int recipeCount = recipes.Count;
+                        }
+                        @for (int i = 0; i < Math.Min(10, recipeCount); i++)
+                        {
+                            <div class="col-lg-6">
+                                <a asp-action="RecipeDetails" asp-controller="Home" asp-route-id="@recipes[i]?.RecipeId">
+                                    <div class="d-flex align-items-center">
+                                        <img class="flex-shrink-0 img-fluid rounded" src="@Url.Content(ConstantApp.wwwImgPath+recipes[i].ImageRecipe)" alt=""
+                                             style="width: 80px;">
+                                        <div class="w-100 d-flex flex-column text-start ps-4">
+                                            <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                                <span>@recipes[i].Recipename</span>
+                                                <span class="text-primary">@recipes[i].Price</span>
+                                            </h5>
+                                            <small class="fst-italic">
+                                                @recipes[i]?.Chef?.FirstName @recipes[i]?.Chef?.LastName
+                                            </small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Menu End -->
+<!-- Team Start -->
+<div class="pt-5 pb-3">
+    <div class="container">
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">@localizer["Team Members"]</h5>
+            <h1 class="mb-5">@localizer["Our Master Chefs"]</h1>
+        </div>
+        <div class="row g-4">
+            @{
+                int counter = 0;
+                foreach (var r in chefs)
+                {
+                    if (counter < 8)
+                    {
+                        <div class="col-lg-3 col-md-6 recipe-item wow fadeInUp" data-wow-delay="0.1s">
+                            <a asp-action="ChefProfile" asp-controller="Home" asp-route-id="@r?.Userid">
+                                <div class="team-item text-center rounded overflow-hidden">
+                                    <div class="rounded-circle overflow-hidden m-4">
+                                        <img class="img-fluid" style="max-width:250px; max-height:250px; width:250px; height:250px;" src="@Url.Content(ConstantApp.wwwImgPath + r.Image)" alt="">
+                                    </div>
+                                    <h5 class="mb-0">@r?.FirstName @r?.LastName</h5>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        break; 
+                    }
+                    counter++;
+                }
+            }
+        </div>
+    </div>
+</div>
+<!-- Team End -->
+<!-- Testimonial Start -->
+<div class="py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="text-center">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">@localizer["testimonials"]</h5>
+            <h1 class="mb-5">@localizer["Our Clients Say"]</h1>
+        </div>
+        <div class="owl-carousel testimonial-carousel">
+            @{
+                @foreach (var t in testimonials)
+                {
+                    <div class="testimonial-item bg-transparent border rounded p-4">
+                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                        <p>
+                            @t.TestimonialText
+                        </p>
+                        <div class="d-flex align-items-center">
+                            <img class="img-fluid flex-shrink-0 rounded-circle" src="@Url.Content(ConstantApp.wwwImgPath + t.Userimg)"
+                                 style="width: 50px; height: 50px;">
+                            <div class="ps-3">
+                                <h5 class="mb-1">@t?.User?.FirstName @t?.User?.LastName</h5>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<!-- Testimonial End -->
+<!-- Footer Start -->

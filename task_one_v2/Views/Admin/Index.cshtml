@@ -1,0 +1,164 @@
+﻿@using task_one_v2.App_Core.ConstString
+@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+@{
+    Layout = ConstantApp.adminLayout;
+    UserInfo admin = ViewBag.AdminData;
+    List<StatisticsInfo> chefStatisticsInfos = ViewBag.ChefStatisticsInfos ?? new List<StatisticsInfo>();
+    List<StatisticsInfo> userStatisticsInfos = ViewBag.UserStatisticsInfos ?? new List<StatisticsInfo>();
+    List<StatisticsInfo> testimonialStatisticsInfos = ViewBag.TestimonialStatisticsInfos ?? new List<StatisticsInfo>();
+    List<StatisticsInfo> recipeStatisticsInfos = ViewBag.RecipeStatisticsInfos ?? new List<StatisticsInfo>();
+    List<StatisticsInfo> salesStatisticsInfos = ViewBag.SalesStatisticsInfos ?? new List<StatisticsInfo>();
+    List<StatisticsInfo> profitStatisticsInfos = ViewBag.ProfitStatisticsInfos ?? new List<StatisticsInfo>();
+    List<StatisticsInfo> fullstatisticsInfos = ViewBag.fullstatisticsInfos ?? new List<StatisticsInfo>();
+
+}
+
+<div class="container-fluid">
+    <div class="row">
+
+        @foreach (var i in fullstatisticsInfos)
+        {
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                <div class="card card-tale">
+                    <div class="card-body">
+                        <p class="mb-4">
+                            @localizer[i.Title]
+                        </p>
+                        <p class="fs-30 mb-2">@i.GetCount</p>
+                    </div>
+                </div>
+            </div>
+        }
+        <!-- Chef Pie Chart -->
+        <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="chefPieChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Pie Chart -->
+        <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="userPieChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonial Pie Chart -->
+        <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="testimonialPieChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe Pie Chart -->
+        <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="recipePieChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Pie Chart -->
+        <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="salesPieChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profit Pie Chart -->
+        <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="profitPieChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to create pie chart
+    function createPieChart(ctx, labels, data) {
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    // Create pie charts
+    document.addEventListener('DOMContentLoaded', function () {
+        createPieChart(
+            document.getElementById('chefPieChart').getContext('2d'),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(chefStatisticsInfos.Select(info => info.Title).ToList())),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(chefStatisticsInfos.Select(info => info.GetCount).ToList()))
+                );
+
+        createPieChart(
+            document.getElementById('userPieChart').getContext('2d'),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(userStatisticsInfos.Select(info => info.Title).ToList())),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(userStatisticsInfos.Select(info => info.GetCount).ToList()))
+                );
+
+        createPieChart(
+            document.getElementById('testimonialPieChart').getContext('2d'),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(testimonialStatisticsInfos.Select(info => info.Title).ToList())),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(testimonialStatisticsInfos.Select(info => info.GetCount).ToList()))
+                );
+
+        createPieChart(
+            document.getElementById('recipePieChart').getContext('2d'),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(recipeStatisticsInfos.Select(info => info.Title).ToList())),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(recipeStatisticsInfos.Select(info => info.GetCount).ToList()))
+                );
+
+        createPieChart(
+            document.getElementById('salesPieChart').getContext('2d'),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(salesStatisticsInfos.Select(info => info.Title).ToList())),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(salesStatisticsInfos.Select(info => info.GetCount).ToList()))
+                );
+
+        createPieChart(
+            document.getElementById('profitPieChart').getContext('2d'),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(profitStatisticsInfos.Select(info => info.Title).ToList())),
+    @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(profitStatisticsInfos.Select(info => info.GetCount).ToList()))
+                );
+    });
+</script>
